@@ -121,6 +121,7 @@ var Entries = []Entry{
 			"MD4",
 			"Double MD5",
 			"LM",
+			"NT",
 			"RIPEMD-128",
 			"Haval-128",
 			"Tiger-128",
