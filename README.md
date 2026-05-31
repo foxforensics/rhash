@@ -7,7 +7,7 @@ go install go.foxforensics.dev/rhash@latest
 
 ## Usage
 ```console
-$ rhash SUM
+$ rhash HASHSUM
 ```
 
 ## Acknowledgments
