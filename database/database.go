@@ -4,14 +4,15 @@
 package database
 
 import (
-	"regexp"
 	"strings"
+
+	"github.com/dlclark/regexp2/v2"
 )
 
 // Entry of data pattern.
 type Entry struct {
 	// Hash regex.
-	Regex *regexp.Regexp
+	Regex *regexp2.Regexp
 	// Hash names.
 	Names []string
 }
@@ -19,7 +20,7 @@ type Entry struct {
 // Entries of data patterns.
 var Entries = []Entry{
 	{
-		regexp.MustCompile("^[a-f0-9]{4}$"),
+		regexp2.MustCompile("^[a-f0-9]{4}$"),
 		[]string{
 			"CRC-16",
 			"CRC-16-CCITT",
@@ -27,7 +28,7 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{8}$"),
+		regexp2.MustCompile("^[a-f0-9]{8}$"),
 		[]string{
 			"Adler-32",
 			"CRC-32B",
@@ -42,25 +43,25 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{6}$"),
+		regexp2.MustCompile("^[a-f0-9]{6}$"),
 		[]string{
 			"CRC-24",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$crc32\\$[a-f0-9]{8}.)?[a-f0-9]{8}$"),
+		regexp2.MustCompile("^(\\$crc32\\$[a-f0-9]{8}.)?[a-f0-9]{8}$"),
 		[]string{
 			"CRC-32",
 		},
 	},
 	{
-		regexp.MustCompile("^\\+[a-z0-9\\/.]{12}$"),
+		regexp2.MustCompile("^\\+[a-z0-9\\/.]{12}$"),
 		[]string{
 			"Eggdrop IRC Bot",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9\\/.]{13}$"),
+		regexp2.MustCompile("^[a-z0-9\\/.]{13}$"),
 		[]string{
 			"DES(Unix)",
 			"Traditional DES",
@@ -68,7 +69,7 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{16}$"),
+		regexp2.MustCompile("^[a-f0-9]{16}$"),
 		[]string{
 			"MySQL323",
 			"DES(Oracle)",
@@ -79,43 +80,43 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9\\/.]{16}$"),
+		regexp2.MustCompile("^[a-z0-9\\/.]{16}$"),
 		[]string{
 			"Cisco-PIX(MD5)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\([a-z0-9\\/+]{20}\\)$"),
+		regexp2.MustCompile("^\\([a-z0-9\\/+]{20}\\)$"),
 		[]string{
 			"Lotus Notes/Domino 6",
 		},
 	},
 	{
-		regexp.MustCompile("^_[a-z0-9\\/.]{19}$"),
+		regexp2.MustCompile("^_[a-z0-9\\/.]{19}$"),
 		[]string{
 			"BSDi Crypt",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{24}$"),
+		regexp2.MustCompile("^[a-f0-9]{24}$"),
 		[]string{
 			"CRC-96(ZIP)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9\\/.]{24}$"),
+		regexp2.MustCompile("^[a-z0-9\\/.]{24}$"),
 		[]string{
 			"Crypt16",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$md2\\$)?[a-f0-9]{32}$"),
+		regexp2.MustCompile("^(\\$md2\\$)?[a-f0-9]{32}$"),
 		[]string{
 			"MD2",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}(:.+)?$"),
+		regexp2.MustCompile("^[a-f0-9]{32}(:.+)?$"),
 		[]string{
 			"MD5",
 			"MD4",
@@ -151,38 +152,38 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$snefru\\$)?[a-f0-9]{32}$"),
+		regexp2.MustCompile("^(\\$snefru\\$)?[a-f0-9]{32}$"),
 		[]string{
 			"Snefru-128",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$NT\\$)?[a-f0-9]{32}$"),
+		regexp2.MustCompile("^(\\$NT\\$)?[a-f0-9]{32}$"),
 		[]string{
 			"NTLM",
 		},
 	},
 	{
-		regexp.MustCompile("^([^\\\\\\/:*?\"<>|]{1,20}:)?[a-f0-9]{32}(:[^\\\\\\/:*?\"<>|]{1,20})?$"),
+		regexp2.MustCompile("^([^\\\\\\/:*?\"<>|]{1,20}:)?[a-f0-9]{32}(:[^\\\\\\/:*?\"<>|]{1,20})?$"),
 		[]string{
 			"Domain Cached Credentials",
 		},
 	},
 	{
-		regexp.MustCompile("^([^\\\\\\/:*?\"<>|]{1,20}:)?(\\$DCC2\\$10240#[^\\\\\\/:*?\"<>|]{1,20}#)?[a-f0-9]{32}$"),
+		regexp2.MustCompile("^([^\\\\\\/:*?\"<>|]{1,20}:)?(\\$DCC2\\$10240#[^\\\\\\/:*?\"<>|]{1,20}#)?[a-f0-9]{32}$"),
 		[]string{
 			"Domain Cached Credentials 2",
 		},
 	},
 	{
-		regexp.MustCompile("^{SHA}[a-z0-9\\/+]{27}=$"),
+		regexp2.MustCompile("^{SHA}[a-z0-9\\/+]{27}=$"),
 		[]string{
 			"SHA-1(Base64)",
 			"Netscape LDAP SHA",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$1\\$[a-z0-9\\/.]{0,8}\\$[a-z0-9\\/.]{22}(:.*)?$"),
+		regexp2.MustCompile("^\\$1\\$[a-z0-9\\/.]{0,8}\\$[a-z0-9\\/.]{22}(:.*)?$"),
 		[]string{
 			"MD5 Crypt",
 			"Cisco-IOS(MD5)",
@@ -190,13 +191,13 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^0x[a-f0-9]{32}$"),
+		regexp2.MustCompile("^0x[a-f0-9]{32}$"),
 		[]string{
 			"Lineage II C4",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$H\\$[a-z0-9\\/.]{31}$"),
+		regexp2.MustCompile("^\\$H\\$[a-z0-9\\/.]{31}$"),
 		[]string{
 			"phpBB v3.x",
 			"Wordpress v2.6.0/2.6.1",
@@ -204,7 +205,7 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^\\$P\\$[a-z0-9\\/.]{31}$"),
+		regexp2.MustCompile("^\\$P\\$[a-z0-9\\/.]{31}$"),
 		[]string{
 			"Wordpress \u2265 v2.6.2",
 			"Joomla \u2265 v2.5.18",
@@ -212,14 +213,14 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:[a-z0-9]{2}$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:[a-z0-9]{2}$"),
 		[]string{
 			"osCommerce",
 			"xt:Commerce",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$apr1\\$[a-z0-9\\/.]{0,8}\\$[a-z0-9\\/.]{22}$"),
+		regexp2.MustCompile("^\\$apr1\\$[a-z0-9\\/.]{0,8}\\$[a-z0-9\\/.]{22}$"),
 		[]string{
 			"MD5(APR)",
 			"Apache MD5",
@@ -227,37 +228,37 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^{smd5}[a-z0-9$\\/.]{31}$"),
+		regexp2.MustCompile("^{smd5}[a-z0-9$\\/.]{31}$"),
 		[]string{
 			"AIX(smd5)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:[a-f0-9]{32}$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:[a-f0-9]{32}$"),
 		[]string{
 			"WebEdition CMS",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:.{5}$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:.{5}$"),
 		[]string{
 			"IP.Board \u2265 v2+",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:.{8}$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:.{8}$"),
 		[]string{
 			"MyBB \u2265 v1.2+",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9]{34}$"),
+		regexp2.MustCompile("^[a-z0-9]{34}$"),
 		[]string{
 			"CryptoCurrency(Address)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{40}(:.+)?$"),
+		regexp2.MustCompile("^[a-f0-9]{40}(:.+)?$"),
 		[]string{
 			"SHA-1",
 			"Double SHA-1",
@@ -281,20 +282,20 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^\\*[a-f0-9]{40}$"),
+		regexp2.MustCompile("^\\*[a-f0-9]{40}$"),
 		[]string{
 			"MySQL5.x",
 			"MySQL4.1",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9]{43}$"),
+		regexp2.MustCompile("^[a-z0-9]{43}$"),
 		[]string{
 			"Cisco-IOS(SHA-256)",
 		},
 	},
 	{
-		regexp.MustCompile("^{SSHA}[a-z0-9\\/+]{38}==$"),
+		regexp2.MustCompile("^{SSHA}[a-z0-9\\/+]{38}==$"),
 		[]string{
 			"SSHA-1(Base64)",
 			"Netscape LDAP SSHA",
@@ -302,13 +303,13 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9=]{47}$"),
+		regexp2.MustCompile("^[a-z0-9=]{47}$"),
 		[]string{
 			"Fortigate(FortiOS)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{48}$"),
+		regexp2.MustCompile("^[a-f0-9]{48}$"),
 		[]string{
 			"Haval-192",
 			"Tiger-192",
@@ -319,38 +320,38 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{51}$"),
+		regexp2.MustCompile("^[a-f0-9]{51}$"),
 		[]string{
 			"Palshop CMS",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9]{51}$"),
+		regexp2.MustCompile("^[a-z0-9]{51}$"),
 		[]string{
 			"CryptoCurrency(PrivateKey)",
 		},
 	},
 	{
-		regexp.MustCompile("^{ssha1}[0-9]{2}\\$[a-z0-9$\\/.]{44}$"),
+		regexp2.MustCompile("^{ssha1}[0-9]{2}\\$[a-z0-9$\\/.]{44}$"),
 		[]string{
 			"AIX(ssha1)",
 		},
 	},
 	{
-		regexp.MustCompile("^0x0100[a-f0-9]{48}$"),
+		regexp2.MustCompile("^0x0100[a-f0-9]{48}$"),
 		[]string{
 			"MSSQL(2005)",
 			"MSSQL(2008)",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$md5,rounds=[0-9]+\\$|\\$md5\\$rounds=[0-9]+\\$|\\$md5\\$)[a-z0-9\\/.]{0,16}(\\$|\\$\\$)[a-z0-9\\/.]{22}$"),
+		regexp2.MustCompile("^(\\$md5,rounds=[0-9]+\\$|\\$md5\\$rounds=[0-9]+\\$|\\$md5\\$)[a-z0-9\\/.]{0,16}(\\$|\\$\\$)[a-z0-9\\/.]{22}$"),
 		[]string{
 			"Sun MD5 Crypt",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{56}$"),
+		regexp2.MustCompile("^[a-f0-9]{56}$"),
 		[]string{
 			"SHA-224",
 			"Haval-224",
@@ -360,7 +361,7 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$2[axy]|\\$2)\\$[0-9]{2}\\$[a-z0-9\\/.]{53}$"),
+		regexp2.MustCompile("^(\\$2[axy]|\\$2)\\$[0-9]{2}\\$[a-z0-9\\/.]{53}$"),
 		[]string{
 			"Blowfish(OpenBSD)",
 			"Woltlab Burning Board 4.x",
@@ -368,43 +369,43 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{40}:[a-f0-9]{16}$"),
+		regexp2.MustCompile("^[a-f0-9]{40}:[a-f0-9]{16}$"),
 		[]string{
 			"Android PIN",
 		},
 	},
 	{
-		regexp.MustCompile("^(S:)?[a-f0-9]{40}(:)?[a-f0-9]{20}$"),
+		regexp2.MustCompile("^(S:)?[a-f0-9]{40}(:)?[a-f0-9]{20}$"),
 		[]string{
 			"Oracle 11g/12c",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$bcrypt-sha256\\$(2[axy]|2)\\,[0-9]+\\$[a-z0-9\\/.]{22}\\$[a-z0-9\\/.]{31}$"),
+		regexp2.MustCompile("^\\$bcrypt-sha256\\$(2[axy]|2)\\,[0-9]+\\$[a-z0-9\\/.]{22}\\$[a-z0-9\\/.]{31}$"),
 		[]string{
 			"bcrypt(SHA-256)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:.{3}$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:.{3}$"),
 		[]string{
 			"vBulletin < v3.8.5",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:.{30}$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:.{30}$"),
 		[]string{
 			"vBulletin \u2265 v3.8.5",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$snefru\\$)?[a-f0-9]{64}$"),
+		regexp2.MustCompile("^(\\$snefru\\$)?[a-f0-9]{64}$"),
 		[]string{
 			"Snefru-256",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{64}(:.+)?$"),
+		regexp2.MustCompile("^[a-f0-9]{64}(:.+)?$"),
 		[]string{
 			"SHA-256",
 			"RIPEMD-256",
@@ -424,56 +425,56 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:[a-z0-9]{32}$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:[a-z0-9]{32}$"),
 		[]string{
 			"Joomla < v2.5.18",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f-0-9]{32}:[a-f-0-9]{32}$"),
+		regexp2.MustCompile("^[a-f-0-9]{32}:[a-f-0-9]{32}$"),
 		[]string{
 			"SAM(LM_Hash:NT_Hash)",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$chap\\$0\\*)?[a-f0-9]{32}[\\*:][a-f0-9]{32}(:[0-9]{2})?$"),
+		regexp2.MustCompile("^(\\$chap\\$0\\*)?[a-f0-9]{32}[\\*:][a-f0-9]{32}(:[0-9]{2})?$"),
 		[]string{
 			"MD5(Chap)",
 			"iSCSI CHAP Authentication",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$episerver\\$\\*0\\*[a-z0-9\\/=+]+\\*[a-z0-9\\/=+]{27,28}$"),
+		regexp2.MustCompile("^\\$episerver\\$\\*0\\*[a-z0-9\\/=+]+\\*[a-z0-9\\/=+]{27,28}$"),
 		[]string{
 			"EPiServer 6.x < v4",
 		},
 	},
 	{
-		regexp.MustCompile("^{ssha256}[0-9]{2}\\$[a-z0-9$\\/.]{60}$"),
+		regexp2.MustCompile("^{ssha256}[0-9]{2}\\$[a-z0-9$\\/.]{60}$"),
 		[]string{
 			"AIX(ssha256)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{80}$"),
+		regexp2.MustCompile("^[a-f0-9]{80}$"),
 		[]string{
 			"RIPEMD-320",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$episerver\\$\\*1\\*[a-z0-9\\/=+]+\\*[a-z0-9\\/=+]{42,43}$"),
+		regexp2.MustCompile("^\\$episerver\\$\\*1\\*[a-z0-9\\/=+]+\\*[a-z0-9\\/=+]{42,43}$"),
 		[]string{
 			"EPiServer 6.x \u2265 v4",
 		},
 	},
 	{
-		regexp.MustCompile("^0x0100[a-f0-9]{88}$"),
+		regexp2.MustCompile("^0x0100[a-f0-9]{88}$"),
 		[]string{
 			"MSSQL(2000)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{96}$"),
+		regexp2.MustCompile("^[a-f0-9]{96}$"),
 		[]string{
 			"SHA-384",
 			"SHA3-384",
@@ -482,20 +483,20 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^{SSHA512}[a-z0-9\\/+]{96}$"),
+		regexp2.MustCompile("^{SSHA512}[a-z0-9\\/+]{96}$"),
 		[]string{
 			"SSHA-512(Base64)",
 			"LDAP(SSHA-512)",
 		},
 	},
 	{
-		regexp.MustCompile("^{ssha512}[0-9]{2}\\$[a-z0-9\\/.]{16,48}\\$[a-z0-9\\/.]{86}$"),
+		regexp2.MustCompile("^{ssha512}[0-9]{2}\\$[a-z0-9\\/.]{16,48}\\$[a-z0-9\\/.]{86}$"),
 		[]string{
 			"AIX(ssha512)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{128}(:.+)?$"),
+		regexp2.MustCompile("^[a-f0-9]{128}(:.+)?$"),
 		[]string{
 			"SHA-512",
 			"Whirlpool",
@@ -513,405 +514,405 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{136}$"),
+		regexp2.MustCompile("^[a-f0-9]{136}$"),
 		[]string{
 			"OSX v10.7",
 		},
 	},
 	{
-		regexp.MustCompile("^0x0200[a-f0-9]{136}$"),
+		regexp2.MustCompile("^0x0200[a-f0-9]{136}$"),
 		[]string{
 			"MSSQL(2012)",
 			"MSSQL(2014)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$ml\\$[0-9]+\\$[a-f0-9]{64}\\$[a-f0-9]{128}$"),
+		regexp2.MustCompile("^\\$ml\\$[0-9]+\\$[a-f0-9]{64}\\$[a-f0-9]{128}$"),
 		[]string{
 			"OSX v10.8",
 			"OSX v10.9",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{256}$"),
+		regexp2.MustCompile("^[a-f0-9]{256}$"),
 		[]string{
 			"Skein-1024",
 		},
 	},
 	{
-		regexp.MustCompile("^grub\\.pbkdf2\\.sha512\\.[0-9]+\\.([a-f0-9]{128,1000}[a-f0-9]{0,1000}[a-f0-9]{0,48}\\.|[0-9]+\\.)?[a-f0-9]{128}$"),
+		regexp2.MustCompile("^grub\\\\.pbkdf2\\\\.sha512\\\\.[0-9]+\\\\.([a-f0-9]{128,2048}\\\\.|[0-9]+\\\\.)?[a-f0-9]{128}$"),
 		[]string{
 			"GRUB 2",
 		},
 	},
 	{
-		regexp.MustCompile("^sha1\\$[a-z0-9]+\\$[a-f0-9]{40}$"),
+		regexp2.MustCompile("^sha1\\$[a-z0-9]+\\$[a-f0-9]{40}$"),
 		[]string{
 			"Django(SHA-1)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{49}$"),
+		regexp2.MustCompile("^[a-f0-9]{49}$"),
 		[]string{
 			"Citrix Netscaler",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$S\\$[a-z0-9\\/.]{52}$"),
+		regexp2.MustCompile("^\\$S\\$[a-z0-9\\/.]{52}$"),
 		[]string{
 			"Drupal > v7.x",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$5\\$(rounds=[0-9]+\\$)?[a-z0-9\\/.]{0,16}\\$[a-z0-9\\/.]{43}$"),
+		regexp2.MustCompile("^\\$5\\$(rounds=[0-9]+\\$)?[a-z0-9\\/.]{0,16}\\$[a-z0-9\\/.]{43}$"),
 		[]string{
 			"SHA-256 Crypt",
 		},
 	},
 	{
-		regexp.MustCompile("^0x[a-f0-9]{4}[a-f0-9]{16}[a-f0-9]{64}$"),
+		regexp2.MustCompile("^0x[a-f0-9]{4}[a-f0-9]{16}[a-f0-9]{64}$"),
 		[]string{
 			"Sybase ASE",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$6\\$(rounds=[0-9]+\\$)?[a-z0-9\\/.]{0,16}\\$[a-z0-9\\/.]{86}$"),
+		regexp2.MustCompile("^\\$6\\$(rounds=[0-9]+\\$)?[a-z0-9\\/.]{0,16}\\$[a-z0-9\\/.]{86}$"),
 		[]string{
 			"SHA-512 Crypt",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$sha\\$[a-z0-9]{1,16}\\$([a-f0-9]{32}|[a-f0-9]{40}|[a-f0-9]{64}|[a-f0-9]{128}|[a-f0-9]{140})$"),
+		regexp2.MustCompile("^\\$sha\\$[a-z0-9]{1,16}\\$([a-f0-9]{32}|[a-f0-9]{40}|[a-f0-9]{64}|[a-f0-9]{128}|[a-f0-9]{140})$"),
 		[]string{
 			"Minecraft(AuthMe Reloaded)",
 		},
 	},
 	{
-		regexp.MustCompile("^sha256\\$[a-z0-9]+\\$[a-f0-9]{64}$"),
+		regexp2.MustCompile("^sha256\\$[a-z0-9]+\\$[a-f0-9]{64}$"),
 		[]string{
 			"Django(SHA-256)",
 		},
 	},
 	{
-		regexp.MustCompile("^sha384\\$[a-z0-9]+\\$[a-f0-9]{96}$"),
+		regexp2.MustCompile("^sha384\\$[a-z0-9]+\\$[a-f0-9]{96}$"),
 		[]string{
 			"Django(SHA-384)",
 		},
 	},
 	{
-		regexp.MustCompile("^crypt1:[a-z0-9+=]{12}:[a-z0-9+=]{12}$"),
+		regexp2.MustCompile("^crypt1:[a-z0-9+=]{12}:[a-z0-9+=]{12}$"),
 		[]string{
 			"Clavister Secure Gateway",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{112}$"),
+		regexp2.MustCompile("^[a-f0-9]{112}$"),
 		[]string{
 			"Cisco VPN Client(PCF-File)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{1000}[a-f0-9]{329}$"),
+		regexp2.MustCompile("^[a-f0-9]{1329}$"),
 		[]string{
 			"Microsoft MSTSC(RDP-File)",
 		},
 	},
 	{
-		regexp.MustCompile("^[^\\\\\\/:*?\"<>|]{1,20}[:]{2,3}([^\\\\\\/:*?\"<>|]{1,20})?:[a-f0-9]{48}:[a-f0-9]{48}:[a-f0-9]{16}$"),
+		regexp2.MustCompile("^[^\\\\\\/:*?\"<>|]{1,20}[:]{2,3}([^\\\\\\/:*?\"<>|]{1,20})?:[a-f0-9]{48}:[a-f0-9]{48}:[a-f0-9]{16}$"),
 		[]string{
 			"NetNTLMv1-VANILLA / NetNTLMv1+ESS",
 		},
 	},
 	{
-		regexp.MustCompile("^([^\\\\\\/:*?\"<>|]{1,20}\\\\)?[^\\\\\\/:*?\"<>|]{1,20}[:]{2,3}([^\\\\\\/:*?\"<>|]{1,20}:)?[^\\\\\\/:*?\"<>|]{1,20}:[a-f0-9]{32}:[a-f0-9]+$"),
+		regexp2.MustCompile("^([^\\\\\\/:*?\"<>|]{1,20}\\\\)?[^\\\\\\/:*?\"<>|]{1,20}[:]{2,3}([^\\\\\\/:*?\"<>|]{1,20}:)?[^\\\\\\/:*?\"<>|]{1,20}:[a-f0-9]{32}:[a-f0-9]+$"),
 		[]string{
 			"NetNTLMv2",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$(krb5pa|mskrb5)\\$([0-9]{2})?\\$.+\\$[a-f0-9]{1,}$"),
+		regexp2.MustCompile("^\\$(krb5pa|mskrb5)\\$([0-9]{2})?\\$.+\\$[a-f0-9]{1,}$"),
 		[]string{
 			"Kerberos 5 AS-REQ Pre-Auth",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$scram\\$[0-9]+\\$[a-z0-9\\/.]{16}\\$sha-1=[a-z0-9\\/.]{27},sha-256=[a-z0-9\\/.]{43},sha-512=[a-z0-9\\/.]{86}$"),
+		regexp2.MustCompile("^\\$scram\\$[0-9]+\\$[a-z0-9\\/.]{16}\\$sha-1=[a-z0-9\\/.]{27},sha-256=[a-z0-9\\/.]{43},sha-512=[a-z0-9\\/.]{86}$"),
 		[]string{
 			"SCRAM Hash",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{40}:[a-f0-9]{0,32}$"),
+		regexp2.MustCompile("^[a-f0-9]{40}:[a-f0-9]{0,32}$"),
 		[]string{
 			"Redmine Project Management Web App",
 		},
 	},
 	{
-		regexp.MustCompile("^(.+)?\\$[a-f0-9]{16}$"),
+		regexp2.MustCompile("^(.+)?\\$[a-f0-9]{16}$"),
 		[]string{
 			"SAP CODVN B (BCODE)",
 		},
 	},
 	{
-		regexp.MustCompile("^(.+)?\\$[a-f0-9]{40}$"),
+		regexp2.MustCompile("^(.+)?\\$[a-f0-9]{40}$"),
 		[]string{
 			"SAP CODVN F/G (PASSCODE)",
 		},
 	},
 	{
-		regexp.MustCompile("^(.+\\$)?[a-z0-9\\/.+]{30}(:.+)?$"),
+		regexp2.MustCompile("^(.+\\$)?[a-z0-9\\/.+]{30}(:.+)?$"),
 		[]string{
 			"Juniper Netscreen/SSG(ScreenOS)",
 		},
 	},
 	{
-		regexp.MustCompile("^0x[a-f0-9]{60}\\s0x[a-f0-9]{40}$"),
+		regexp2.MustCompile("^0x[a-f0-9]{60}\\s0x[a-f0-9]{40}$"),
 		[]string{
 			"EPi",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{40}:[^*]{1,25}$"),
+		regexp2.MustCompile("^[a-f0-9]{40}:[^*]{1,25}$"),
 		[]string{
 			"SMF \u2265 v1.1",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$wbb3\\$\\*1\\*)?[a-f0-9]{40}[:*][a-f0-9]{40}$"),
+		regexp2.MustCompile("^(\\$wbb3\\$\\*1\\*)?[a-f0-9]{40}[:*][a-f0-9]{40}$"),
 		[]string{
 			"Woltlab Burning Board 3.x",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{130}(:[a-f0-9]{40})?$"),
+		regexp2.MustCompile("^[a-f0-9]{130}(:[a-f0-9]{40})?$"),
 		[]string{
 			"IPMI2 RAKP HMAC-SHA1",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{32}:[0-9]+:[a-z0-9_.+-]+@[a-z0-9-]+\\.[a-z0-9-.]+$"),
+		regexp2.MustCompile("^[a-f0-9]{32}:[0-9]+:[a-z0-9_.+-]+@[a-z0-9-]+\\.[a-z0-9-.]+$"),
 		[]string{
 			"Lastpass",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9\\/.]{16}([:$].{1,})?$"),
+		regexp2.MustCompile("^[a-z0-9\\/.]{16}([:$].{1,})?$"),
 		[]string{
 			"Cisco-ASA(MD5)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$vnc\\$\\*[a-f0-9]{32}\\*[a-f0-9]{32}$"),
+		regexp2.MustCompile("^\\$vnc\\$\\*[a-f0-9]{32}\\*[a-f0-9]{32}$"),
 		[]string{
 			"VNC",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9]{32}(:([a-z0-9-]+\\.)?[a-z0-9-.]+\\.[a-z]{2,7}:.+:[0-9]+)?$"),
+		regexp2.MustCompile("^[a-z0-9]{32}(:([a-z0-9-]+\\.)?[a-z0-9-.]+\\.[a-z]{2,7}:.+:[0-9]+)?$"),
 		[]string{
 			"DNSSEC(NSEC3)",
 		},
 	},
 	{
-		regexp.MustCompile("^(user-.+:)?\\$racf\\$\\*.+\\*[a-f0-9]{16}$"),
+		regexp2.MustCompile("^(user-.+:)?\\$racf\\$\\*.+\\*[a-f0-9]{16}$"),
 		[]string{
 			"RACF",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$3\\$\\$[a-f0-9]{32}$"),
+		regexp2.MustCompile("^\\$3\\$\\$[a-f0-9]{32}$"),
 		[]string{
 			"NTHash(FreeBSD Variant)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$sha1\\$[0-9]+\\$[a-z0-9\\/.]{0,64}\\$[a-z0-9\\/.]{28}$"),
+		regexp2.MustCompile("^\\$sha1\\$[0-9]+\\$[a-z0-9\\/.]{0,64}\\$[a-z0-9\\/.]{28}$"),
 		[]string{
 			"SHA-1 Crypt",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{70}$"),
+		regexp2.MustCompile("^[a-f0-9]{70}$"),
 		[]string{
 			"hMailServer",
 		},
 	},
 	{
-		regexp.MustCompile("^[:\\$][AB][:\\$]([a-f0-9]{1,8}[:\\$])?[a-f0-9]{32}$"),
+		regexp2.MustCompile("^[:\\$][AB][:\\$]([a-f0-9]{1,8}[:\\$])?[a-f0-9]{32}$"),
 		[]string{
 			"MediaWiki",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{140}$"),
+		regexp2.MustCompile("^[a-f0-9]{140}$"),
 		[]string{
 			"Minecraft(xAuth)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$pbkdf2(-sha1)?\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{27}$"),
+		regexp2.MustCompile("^\\$pbkdf2(-sha1)?\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{27}$"),
 		[]string{
 			"PBKDF2-SHA1(Generic)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$pbkdf2-sha256\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{43}$"),
+		regexp2.MustCompile("^\\$pbkdf2-sha256\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{43}$"),
 		[]string{
 			"PBKDF2-SHA256(Generic)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$pbkdf2-sha512\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{86}$"),
+		regexp2.MustCompile("^\\$pbkdf2-sha512\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{86}$"),
 		[]string{
 			"PBKDF2-SHA512(Generic)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$p5k2\\$[0-9]+\\$[a-z0-9\\/+=-]+\\$[a-z0-9\\/+-]{27}=$"),
+		regexp2.MustCompile("^\\$p5k2\\$[0-9]+\\$[a-z0-9\\/+=-]+\\$[a-z0-9\\/+-]{27}=$"),
 		[]string{
 			"PBKDF2(Cryptacular)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$p5k2\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{32}$"),
+		regexp2.MustCompile("^\\$p5k2\\$[0-9]+\\$[a-z0-9\\/.]+\\$[a-z0-9\\/.]{32}$"),
 		[]string{
 			"PBKDF2(Dwayne Litzenberger)",
 		},
 	},
 	{
-		regexp.MustCompile("^{FSHP[0123]\\|[0-9]+\\|[0-9]+}[a-z0-9\\/+=]+$"),
+		regexp2.MustCompile("^{FSHP[0123]\\|[0-9]+\\|[0-9]+}[a-z0-9\\/+=]+$"),
 		[]string{
 			"Fairly Secure Hashed Password",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$PHPS\\$.+\\$[a-f0-9]{32}$"),
+		regexp2.MustCompile("^\\$PHPS\\$.+\\$[a-f0-9]{32}$"),
 		[]string{
 			"PHPS",
 		},
 	},
 	{
-		regexp.MustCompile("^[0-9]{4}:[a-f0-9]{16}:[a-f0-9]{1000}[a-f0-9]{1000}[a-f0-9]{80}$"),
+		regexp2.MustCompile("^[0-9]{4}:[a-f0-9]{16}:[a-f0-9]{2080}$"),
 		[]string{
 			"1Password(Agile Keychain)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{64}:[a-f0-9]{32}:[0-9]{5}:[a-f0-9]{608}$"),
+		regexp2.MustCompile("^[a-f0-9]{64}:[a-f0-9]{32}:[0-9]{5}:[a-f0-9]{608}$"),
 		[]string{
 			"1Password(Cloud Keychain)",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{256}:[a-f0-9]{256}:[a-f0-9]{16}:[a-f0-9]{16}:[a-f0-9]{320}:[a-f0-9]{16}:[a-f0-9]{40}:[a-f0-9]{40}:[a-f0-9]{32}$"),
+		regexp2.MustCompile("^[a-f0-9]{256}:[a-f0-9]{256}:[a-f0-9]{16}:[a-f0-9]{16}:[a-f0-9]{320}:[a-f0-9]{16}:[a-f0-9]{40}:[a-f0-9]{40}:[a-f0-9]{32}$"),
 		[]string{
 			"IKE-PSK MD5",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{256}:[a-f0-9]{256}:[a-f0-9]{16}:[a-f0-9]{16}:[a-f0-9]{320}:[a-f0-9]{16}:[a-f0-9]{40}:[a-f0-9]{40}:[a-f0-9]{40}$"),
+		regexp2.MustCompile("^[a-f0-9]{256}:[a-f0-9]{256}:[a-f0-9]{16}:[a-f0-9]{16}:[a-f0-9]{320}:[a-f0-9]{16}:[a-f0-9]{40}:[a-f0-9]{40}:[a-f0-9]{40}$"),
 		[]string{
 			"IKE-PSK SHA1",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9\\/+]{27}=$"),
+		regexp2.MustCompile("^[a-z0-9\\/+]{27}=$"),
 		[]string{
 			"PeopleSoft",
 		},
 	},
 	{
-		regexp.MustCompile("^crypt\\$[a-f0-9]{5}\\$[a-z0-9\\/.]{13}$"),
+		regexp2.MustCompile("^crypt\\$[a-f0-9]{5}\\$[a-z0-9\\/.]{13}$"),
 		[]string{
 			"Django(DES Crypt Wrapper)",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$django\\$\\*1\\*)?pbkdf2_sha256\\$[0-9]+\\$[a-z0-9]+\\$[a-z0-9\\/+=]{44}$"),
+		regexp2.MustCompile("^(\\$django\\$\\*1\\*)?pbkdf2_sha256\\$[0-9]+\\$[a-z0-9]+\\$[a-z0-9\\/+=]{44}$"),
 		[]string{
 			"Django(PBKDF2-HMAC-SHA256)",
 		},
 	},
 	{
-		regexp.MustCompile("^pbkdf2_sha1\\$[0-9]+\\$[a-z0-9]+\\$[a-z0-9\\/+=]{28}$"),
+		regexp2.MustCompile("^pbkdf2_sha1\\$[0-9]+\\$[a-z0-9]+\\$[a-z0-9\\/+=]{28}$"),
 		[]string{
 			"Django(PBKDF2-HMAC-SHA1)",
 		},
 	},
 	{
-		regexp.MustCompile("^bcrypt(\\$2[axy]|\\$2)\\$[0-9]{2}\\$[a-z0-9\\/.]{53}$"),
+		regexp2.MustCompile("^bcrypt(\\$2[axy]|\\$2)\\$[0-9]{2}\\$[a-z0-9\\/.]{53}$"),
 		[]string{
 			"Django(bcrypt)",
 		},
 	},
 	{
-		regexp.MustCompile("^md5\\$[a-f0-9]+\\$[a-f0-9]{32}$"),
+		regexp2.MustCompile("^md5\\$[a-f0-9]+\\$[a-f0-9]{32}$"),
 		[]string{
 			"Django(MD5)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\{PKCS5S2\\}[a-z0-9\\/+]{64}$"),
+		regexp2.MustCompile("^\\{PKCS5S2\\}[a-z0-9\\/+]{64}$"),
 		[]string{
 			"PBKDF2(Atlassian)",
 		},
 	},
 	{
-		regexp.MustCompile("^md5[a-f0-9]{32}$"),
+		regexp2.MustCompile("^md5[a-f0-9]{32}$"),
 		[]string{
 			"PostgreSQL MD5",
 		},
 	},
 	{
-		regexp.MustCompile("^\\([a-z0-9\\/+]{49}\\)$"),
+		regexp2.MustCompile("^\\([a-z0-9\\/+]{49}\\)$"),
 		[]string{
 			"Lotus Notes/Domino 8",
 		},
 	},
 	{
-		regexp.MustCompile("^SCRYPT:[0-9]{1,}:[0-9]{1}:[0-9]{1}:[a-z0-9:\\/+=]{1,}$"),
+		regexp2.MustCompile("^SCRYPT:[0-9]{1,}:[0-9]{1}:[0-9]{1}:[a-z0-9:\\/+=]{1,}$"),
 		[]string{
 			"scrypt",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$8\\$[a-z0-9\\/.]{14}\\$[a-z0-9\\/.]{43}$"),
+		regexp2.MustCompile("^\\$8\\$[a-z0-9\\/.]{14}\\$[a-z0-9\\/.]{43}$"),
 		[]string{
 			"Cisco Type 8",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$9\\$[a-z0-9\\/.]{14}\\$[a-z0-9\\/.]{43}$"),
+		regexp2.MustCompile("^\\$9\\$[a-z0-9\\/.]{14}\\$[a-z0-9\\/.]{43}$"),
 		[]string{
 			"Cisco Type 9",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$office\\$\\*2007\\*[0-9]{2}\\*[0-9]{3}\\*[0-9]{2}\\*[a-z0-9]{32}\\*[a-z0-9]{32}\\*[a-z0-9]{40}$"),
+		regexp2.MustCompile("^\\$office\\$\\*2007\\*[0-9]{2}\\*[0-9]{3}\\*[0-9]{2}\\*[a-z0-9]{32}\\*[a-z0-9]{32}\\*[a-z0-9]{40}$"),
 		[]string{
 			"Microsoft Office 2007",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$office\\$\\*2010\\*[0-9]{6}\\*[0-9]{3}\\*[0-9]{2}\\*[a-z0-9]{32}\\*[a-z0-9]{32}\\*[a-z0-9]{64}$"),
+		regexp2.MustCompile("^\\$office\\$\\*2010\\*[0-9]{6}\\*[0-9]{3}\\*[0-9]{2}\\*[a-z0-9]{32}\\*[a-z0-9]{32}\\*[a-z0-9]{64}$"),
 		[]string{
 			"Microsoft Office 2010",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$office\\$\\*2013\\*[0-9]{6}\\*[0-9]{3}\\*[0-9]{2}\\*[a-z0-9]{32}\\*[a-z0-9]{32}\\*[a-z0-9]{64}$"),
+		regexp2.MustCompile("^\\$office\\$\\*2013\\*[0-9]{6}\\*[0-9]{3}\\*[0-9]{2}\\*[a-z0-9]{32}\\*[a-z0-9]{32}\\*[a-z0-9]{64}$"),
 		[]string{
 			"Microsoft Office 2013",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$fde\\$[0-9]{2}\\$[a-f0-9]{32}\\$[0-9]{2}\\$[a-f0-9]{32}\\$[a-f0-9]{1000}[a-f0-9]{1000}[a-f0-9]{1000}[a-f0-9]{72}$"),
+		regexp2.MustCompile("^\\\\$fde\\\\$[0-9]{2}\\\\$[a-f0-9]{32}\\\\$[0-9]{2}\\\\$[a-f0-9]{32}\\\\$[a-f0-9]{3072}$"),
 		[]string{
 			"Android FDE \u2264 4.3",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$oldoffice\\$[01]\\*[a-f0-9]{32}\\*[a-f0-9]{32}\\*[a-f0-9]{32}$"),
+		regexp2.MustCompile("^\\$oldoffice\\$[01]\\*[a-f0-9]{32}\\*[a-f0-9]{32}\\*[a-f0-9]{32}$"),
 		[]string{
 			"Microsoft Office \u2264 2003 (MD5+RC4)",
 			"Microsoft Office \u2264 2003 (MD5+RC4) collider-mode #1",
@@ -919,7 +920,7 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^\\$oldoffice\\$[34]\\*[a-f0-9]{32}\\*[a-f0-9]{32}\\*[a-f0-9]{40}$"),
+		regexp2.MustCompile("^\\$oldoffice\\$[34]\\*[a-f0-9]{32}\\*[a-f0-9]{32}\\*[a-f0-9]{40}$"),
 		[]string{
 			"Microsoft Office \u2264 2003 (SHA1+RC4)",
 			"Microsoft Office \u2264 2003 (SHA1+RC4) collider-mode #1",
@@ -927,91 +928,91 @@ var Entries = []Entry{
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$radmin2\\$)?[a-f0-9]{32}$"),
+		regexp2.MustCompile("^(\\$radmin2\\$)?[a-f0-9]{32}$"),
 		[]string{
 			"RAdmin v2.x",
 		},
 	},
 	{
-		regexp.MustCompile("^{x-issha,\\s[0-9]{4}}[a-z0-9\\/+=]+$"),
+		regexp2.MustCompile("^{x-issha,\\s[0-9]{4}}[a-z0-9\\/+=]+$"),
 		[]string{
 			"SAP CODVN H (PWDSALTEDHASH) iSSHA-1",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$cram_md5\\$[a-z0-9\\/+=-]+\\$[a-z0-9\\/+=-]{52}$"),
+		regexp2.MustCompile("^\\$cram_md5\\$[a-z0-9\\/+=-]+\\$[a-z0-9\\/+=-]{52}$"),
 		[]string{
 			"CRAM-MD5",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{16}:2:4:[a-f0-9]{32}$"),
+		regexp2.MustCompile("^[a-f0-9]{16}:2:4:[a-f0-9]{32}$"),
 		[]string{
 			"SipHash",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-f0-9]{4,}$"),
+		regexp2.MustCompile("^[a-f0-9]{4,}$"),
 		[]string{
 			"Cisco Type 7",
 		},
 	},
 	{
-		regexp.MustCompile("^[a-z0-9\\/.]{13,}$"),
+		regexp2.MustCompile("^[a-z0-9\\/.]{13,}$"),
 		[]string{
 			"BigCrypt",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$cisco4\\$)?[a-z0-9\\/.]{43}$"),
+		regexp2.MustCompile("^(\\$cisco4\\$)?[a-z0-9\\/.]{43}$"),
 		[]string{
 			"Cisco Type 4",
 		},
 	},
 	{
-		regexp.MustCompile("^bcrypt_sha256\\$\\$(2[axy]|2)\\$[0-9]+\\$[a-z0-9\\/.]{53}$"),
+		regexp2.MustCompile("^bcrypt_sha256\\$\\$(2[axy]|2)\\$[0-9]+\\$[a-z0-9\\/.]{53}$"),
 		[]string{
 			"Django(bcrypt-SHA256)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$postgres\\$.[^\\*]+[*:][a-f0-9]{1,32}[*:][a-f0-9]{32}$"),
+		regexp2.MustCompile("^\\$postgres\\$.[^\\*]+[*:][a-f0-9]{1,32}[*:][a-f0-9]{32}$"),
 		[]string{
 			"PostgreSQL Challenge-Response Authentication (MD5)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$siemens-s7\\$[0-9]{1}\\$[a-f0-9]{40}\\$[a-f0-9]{40}$"),
+		regexp2.MustCompile("^\\$siemens-s7\\$[0-9]{1}\\$[a-f0-9]{40}\\$[a-f0-9]{40}$"),
 		[]string{
 			"Siemens-S7",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$pst\\$)?[a-f0-9]{8}$"),
+		regexp2.MustCompile("^(\\$pst\\$)?[a-f0-9]{8}$"),
 		[]string{
 			"Microsoft Outlook PST",
 		},
 	},
 	{
-		regexp.MustCompile("^sha256[:$][0-9]+[:$][a-z0-9\\/+]+[:$][a-z0-9\\/+]{32,128}$"),
+		regexp2.MustCompile("^sha256[:$][0-9]+[:$][a-z0-9\\/+]+[:$][a-z0-9\\/+]{32,128}$"),
 		[]string{
 			"PBKDF2-HMAC-SHA256(PHP)",
 		},
 	},
 	{
-		regexp.MustCompile("^(\\$dahua\\$)?[a-z0-9]{8}$"),
+		regexp2.MustCompile("^(\\$dahua\\$)?[a-z0-9]{8}$"),
 		[]string{
 			"Dahua",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$mysqlna\\$[a-f0-9]{40}[:*][a-f0-9]{40}$"),
+		regexp2.MustCompile("^\\$mysqlna\\$[a-f0-9]{40}[:*][a-f0-9]{40}$"),
 		[]string{
 			"MySQL Challenge-Response Authentication (SHA1)",
 		},
 	},
 	{
-		regexp.MustCompile("^\\$pdf\\$[24]\\*[34]\\*128\\*[0-9-]{1,5}\\*1\\*(16|32)\\*[a-f0-9]{32,64}\\*32\\*[a-f0-9]{64}\\*(8|16|32)\\*[a-f0-9]{16,64}$"),
+		regexp2.MustCompile("^\\$pdf\\$[24]\\*[34]\\*128\\*[0-9-]{1,5}\\*1\\*(16|32)\\*[a-f0-9]{32,64}\\*32\\*[a-f0-9]{64}\\*(8|16|32)\\*[a-f0-9]{16,64}$"),
 		[]string{
 			"PDF 1.4 - 1.6 (Acrobat 5 - 8)",
 		},
@@ -1026,7 +1027,7 @@ func Lookup(v string) <-chan string {
 
 	go func(chan<- string) {
 		for _, e := range Entries {
-			if e.Regex.MatchString(v) {
+			if ok, _ := e.Regex.MatchString(v); ok {
 				ch <- strings.Join(e.Names, "\n")
 			}
 		}
