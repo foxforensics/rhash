@@ -6,7 +6,7 @@
 //
 // The arguments are:
 //
-//	sum
+//	hashsum
 //	    Hash sum to find all possible sources for (required).
 package main
 
@@ -18,9 +18,14 @@ import (
 	"go.foxforensics.dev/rhash/database"
 )
 
+var Usage = `© 2026 Fox Forensics. Licensed under MIT License.
+Usage: rhash HASHSUM
+
+Report bugs at: foxforensics.dev/issues`
+
 func main() {
 	if len(os.Args) == 1 || os.Args[1] == "--help" {
-		_, _ = fmt.Fprintln(os.Stderr, "usage: rhash sum")
+		_, _ = fmt.Fprintln(os.Stderr, Usage)
 		os.Exit(2)
 	}
 
